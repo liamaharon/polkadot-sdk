@@ -70,7 +70,8 @@ pub use sp_consensus_aura::{
 
 const LOG_TARGET: &str = "aura";
 
-type AuthorityId<P> = <P as Pair>::Public;
+/// Aura authority ID.
+pub type AuthorityId<P> = <P as Pair>::Public;
 
 /// Run `AURA` in a compatibility mode.
 ///
