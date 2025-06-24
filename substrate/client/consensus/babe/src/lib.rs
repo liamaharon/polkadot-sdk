@@ -913,15 +913,6 @@ where
 /// digest is not present (e.g. genesis or aura -> babe migration), the
 /// function will return `Ok(None)`.
 pub fn find_pre_digest<B: BlockT>(header: &B::Header) -> Result<Option<PreDigest>, Error<B>> {
-	// // genesis block doesn't contain a pre digest so let's generate a
-	// // dummy one to not break any invariants in the rest of the code
-	// if header.number().is_zero() {
-	// 	return Ok(PreDigest::SecondaryPlain(SecondaryPlainPreDigest {
-	// 		slot: 0.into(),
-	// 		authority_index: 0,
-	// 	}))
-	// }
-
 	let mut pre_digest: Option<_> = None;
 	for log in header.digest().logs() {
 		trace!(target: LOG_TARGET, "Checking log {:?}, looking for pre runtime digest", log);
@@ -934,15 +925,6 @@ pub fn find_pre_digest<B: BlockT>(header: &B::Header) -> Result<Option<PreDigest
 	Ok(pre_digest)
 }
 
-// match pre_digest {
-// 	Some(digest) => Ok(digest),
-// 	// first block (genesis or runtime upgrade) doesn't contain a pre digest, so
-// 	// let's generate a dummy one to not break any invariants in the rest of the code
-// 	None => Ok(PreDigest::SecondaryPlain(SecondaryPlainPreDigest {
-// 		slot: 0.into(),
-// 		authority_index: 0,
-// 	})),
-// }
 /// Extract the BABE epoch change digest from the given header, if it exists.
 fn find_next_epoch_digest<B: BlockT>(
 	header: &B::Header,
@@ -1531,6 +1513,7 @@ where
 
 				let epoch_descriptor = intermediate.epoch_descriptor;
 				let first_in_epoch = parent_slot < epoch_descriptor.start_slot();
+				dbg!(&first_in_epoch, &parent_slot, &epoch_descriptor);
 				(epoch_descriptor, first_in_epoch, parent_weight)
 			};
 
