@@ -624,7 +624,6 @@ impl<T: Config> Pallet<T> {
 		debug_assert!(Initialized::<T>::get().is_some());
 
 		if authorities.is_empty() {
-			panic!("Ignoring empty epoch change.");
 			log::warn!(target: LOG_TARGET, "Ignoring empty epoch change.");
 			return
 		}

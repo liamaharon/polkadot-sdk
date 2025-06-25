@@ -22,7 +22,7 @@ use crate::LOG_TARGET;
 
 use super::{Epoch, AUTHORING_SCORE_LENGTH, AUTHORING_SCORE_VRF_CONTEXT};
 use codec::Encode;
-use log::{debug, trace};
+use log::trace;
 use sc_consensus_epochs::Epoch as EpochT;
 use sp_application_crypto::AppCrypto;
 use sp_consensus_babe::{

@@ -1513,7 +1513,6 @@ where
 
 				let epoch_descriptor = intermediate.epoch_descriptor;
 				let first_in_epoch = parent_slot < epoch_descriptor.start_slot();
-				dbg!(&first_in_epoch, &parent_slot, &epoch_descriptor);
 				(epoch_descriptor, first_in_epoch, parent_weight)
 			};
 
@@ -1532,12 +1531,10 @@ where
 					return Err(ConsensusError::ClientImport(
 						babe_err(Error::<Block>::UnexpectedConfigChange).into(),
 					)),
-				(true, false, _) => {
-					panic!("expected epoch change {:?} {:?}", hash, slot);
+				(true, false, _) =>
 					return Err(ConsensusError::ClientImport(
 						babe_err(Error::<Block>::ExpectedEpochChange(hash, slot)).into(),
-					))
-				},
+					)),
 				(false, true, _) =>
 					return Err(ConsensusError::ClientImport(
 						babe_err(Error::<Block>::UnexpectedEpochChange).into(),
