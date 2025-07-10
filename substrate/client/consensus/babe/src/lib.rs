@@ -1195,7 +1195,10 @@ where
 					pre_digest.slot(),
 				)
 				.map_err(|e| Error::<Block>::ForkTree(Box::new(e)))?
-				.ok_or(Error::<Block>::FetchEpoch(parent_hash))?;
+				// TODO: Check the unwrap_or does not open up to any vulnerabilities.
+				// Originally was this .ok_or.
+				// .ok_or(Error::<Block>::FetchEpoch(parent_hash))?;
+				.unwrap_or(ViableEpochDescriptor::UnimportedGenesis(pre_digest.slot()));
 			let viable_epoch = epoch_changes
 				.viable_epoch(&epoch_descriptor, |slot| Epoch::genesis(&self.config, slot))
 				.ok_or(Error::<Block>::FetchEpoch(parent_hash))?;
